@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_study_app/pages/scroll/sliver.dart';
-// import 'package:flutter_base/pages/demo/index/npc.dart';
+
+import 'package:flutter_base/store/index.dart';
+import 'package:flutter_base/pages/demo/sqflite.dart';
+
+final counter = Counter();
 
 class HomePage extends StatefulWidget {
 
@@ -29,7 +32,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     return Material(
       child: Scaffold(
         appBar: AppBar(title: Text('demo'),),
-        body: Text('demo'),
+        body: Column(
+          children: <Widget>[
+            Observer(builder: (_) => Text('${counter.value}'),),
+            RaisedButton(child: Text('增加'), onPressed: counter.increment, color: Theme.of(context).primaryColor, textColor: Colors.white,),
+            RaisedButton(child: Text('初始化'), onPressed: counter.init,),
+            SqfDemoPage(),
+          ],
+        ),
       ),
     );
   }

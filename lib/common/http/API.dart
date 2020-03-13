@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 import './http_request.dart';
-import 'package:flutter_base/models/index.dart';
+// import 'package:flutter_base/models/index.dart';
 
 typedef RequestCallBack<T> = void Function(T value);
 
@@ -44,8 +44,8 @@ class API {
         needLoading: needLoading);
   }
 
-  static Future<StoryListRes> getStoryList() async {
-    dynamic res = await _postRes(storyList, needLoading: true);
-    return StoryListRes.fromJson(res == null ? {} : res);
-  }
+  // static Future<StoryListRes> getStoryList() async {
+  //   dynamic res = await _postRes(storyList, needLoading: true);
+  //   return StoryListRes.fromJson(res == null ? {} : res);
+  // }
 }

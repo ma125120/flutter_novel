@@ -1,17 +1,17 @@
-import 'package:json_annotation/json_annotation.dart';
+// import 'package:json_annotation/json_annotation.dart';
 
-part 'npc.g.dart';
+// part 'npc.g.dart';
 
-@JsonSerializable()
-class Npc {
-    Npc();
+// @JsonSerializable()
+// class Npc {
+//     Npc();
 
-    String id;
-    String image;
-    String name;
-    String signature;
-    String alias;
+//     String id;
+//     String image;
+//     String name;
+//     String signature;
+//     String alias;
     
-    factory Npc.fromJson(Map<String,dynamic> json) => _$NpcFromJson(json);
-    Map<String, dynamic> toJson() => _$NpcToJson(this);
-}
+//     factory Npc.fromJson(Map<String,dynamic> json) => _$NpcFromJson(json);
+//     Map<String, dynamic> toJson() => _$NpcToJson(this);
+// }

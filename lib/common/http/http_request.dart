@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_base/components/loading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_base/config/index.dart';
-// import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 
 typedef RequestCallBack = void Function(Map data);
 
@@ -12,7 +12,7 @@ class HttpRequest {
   static Dio dio = new Dio();
 
   static _addCache() {
-    // dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
+    dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
   }
 
   static init() {
@@ -60,26 +60,26 @@ class HttpRequest {
         url, 
         queryParameters: params,
         data: data,
-        options: Options(
-          headers: headers,
-          method: method,
-          extra: {
-            'needLoading': needLoading ?? true,
-            ...(extra ?? {}),
-          },
-        ),
-        // options: buildCacheOptions(
-        //   Duration(days: 7),
-        //   forceRefresh: true,
-        //   options: Options(
-        //     headers: headers,
-        //     method: method,
-        //     extra: {
-        //       'needLoading': needLoading ?? true,
-        //       ...(extra ?? {}),
-        //     },
-        //   ),
+        // options: Options(
+        //   headers: headers,
+        //   method: method,
+        //   extra: {
+        //     'needLoading': needLoading ?? true,
+        //     ...(extra ?? {}),
+        //   },
         // ),
+        options: buildCacheOptions(
+          Duration(days: 7),
+          forceRefresh: true,
+          options: Options(
+            headers: headers,
+            method: method,
+            extra: {
+              'needLoading': needLoading ?? true,
+              ...(extra ?? {}),
+            },
+          ),
+        ),
       );
 
       if (needLoading) {
