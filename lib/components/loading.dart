@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter_base/config/index.dart';
+import 'package:flutter_novel/config/index.dart';
 
 class MyLoading {
   static Set dict = Set();

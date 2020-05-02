@@ -31,6 +31,9 @@ class Adapt {
     return _width;
   }
 
+  static get width => _width;
+  static get height => _height;
+
   static screenHeight() {
     return _height;
   }
@@ -62,6 +65,7 @@ class Adapt {
   static get statusBarHeight {
     return _statusBarHeight;
   }
+
   static get navbarHeight {
     return kToolbarHeight;
   }

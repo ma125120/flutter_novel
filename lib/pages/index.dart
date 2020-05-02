@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-// import 'package:flutter_base/pages/webview.dart';
-import 'package:flutter_base/pages/tabs/home.dart';
-import 'package:flutter_base/pages/tabs/setting.dart';
+import 'package:flutter_novel/pages/tabs/bookshelf/index.dart';
+// import 'package:flutter_novel/pages/webview.dart';
+import 'package:flutter_novel/pages/tabs/home.dart';
+import 'package:flutter_novel/pages/tabs/setting.dart';
 
 class IndexPage extends StatefulWidget {
   static handler() {
@@ -23,7 +24,7 @@ class _IndexPageState extends State<IndexPage> {
   final PageController _pageController = PageController();
   
   final List<Widget> pages = [
-    HomePage(),
+    BookShelfPage(),
     SettingPage(),
   ];
 
@@ -49,7 +50,7 @@ class _IndexPageState extends State<IndexPage> {
       child: Scaffold(
         body: PageView.builder(
           itemBuilder: (context, index) {
-            return SafeArea(child: pages[index],);
+            return pages[index];
           },
           itemCount: pages.length,
           controller: _pageController,

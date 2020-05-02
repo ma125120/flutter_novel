@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:flutter_base/data/todo.dart';
+import 'package:flutter_novel/data/todo.dart';
 
 // Include generated file
 part 'todo.g.dart';

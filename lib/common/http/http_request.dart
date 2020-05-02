@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:flutter_base/components/loading.dart';
+import 'dart:convert';
+import 'package:flutter_novel/components/loading.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_base/config/index.dart';
+import 'package:flutter_novel/config/index.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 
 typedef RequestCallBack = void Function(Map data);
@@ -12,7 +13,8 @@ class HttpRequest {
   static Dio dio = new Dio();
 
   static _addCache() {
-    dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
+    dio.interceptors
+        .add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
   }
 
   static init() {
@@ -22,24 +24,20 @@ class HttpRequest {
 
     _addCache();
 
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest:(RequestOptions options) async {
-          return options;
-      },
-      onResponse: (Response response) async {
-        
-        // int code = response.data['header']['code'];
-        // print('状态码： $code');
+    dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+      return options;
+    }, onResponse: (Response response) async {
+      // int code = response.data['header']['code'];
+      // print('状态码： $code');
       // Do something with response data
-        return response; // continue
-      },
-      onError: (DioError e) async {
-        MyLoading.hide('请求失败');
-        
-        // Do something with response error
-        return e;//continue
-      }
-    ));
+      return response; // continue
+    }, onError: (DioError e) async {
+      MyLoading.hide('请求失败');
+
+      // Do something with response error
+      return e; //continue
+    }));
   }
 
   static String getUrl(String url) {
@@ -49,7 +47,13 @@ class HttpRequest {
     return baseUrl + url;
   }
 
-  static Future<dynamic> _request<T>(String uri, { String method, Map<String, String> params, Map<String, String> data, Map<String, String> headers, Map<String, dynamic> extra, bool needLoading }) async {
+  static Future<dynamic> _request<T>(String uri,
+      {String method,
+      Map<String, String> params,
+      Map<String, String> data,
+      Map<String, String> headers,
+      Map<String, dynamic> extra,
+      bool needLoading}) async {
     try {
       String url = getUrl(uri);
 
@@ -57,7 +61,7 @@ class HttpRequest {
         MyLoading.show(url);
       }
       Response<T> res = await dio.request(
-        url, 
+        url,
         queryParameters: params,
         data: data,
         // options: Options(
@@ -94,15 +98,38 @@ class HttpRequest {
     }
   }
 
-  static Future<dynamic> get<T>(String uri, { Map<String, String> params, Map<String, String> headers, Map<String, dynamic> extra, bool needLoading }) async {
-    return _request(uri, method: 'GET', params: params, headers: headers, extra: extra, needLoading: needLoading);
+  static Future<dynamic> get<T>(String uri,
+      {Map<String, String> params,
+      Map<String, String> headers,
+      Map<String, dynamic> extra,
+      bool needLoading}) async {
+    return _request(uri,
+        method: 'GET',
+        params: params,
+        headers: headers,
+        extra: extra,
+        needLoading: needLoading);
   }
 
-  static Future<dynamic> post<T>(String uri, { Map<String, String> params, Map<String, String> data, Map<String, String> headers, Map<String, dynamic> extra, bool needLoading }) async {
-    return _request(uri, method: 'POST', data: data, params: params, headers: headers, extra: extra, needLoading: needLoading);
+  static Future<dynamic> post<T>(String uri,
+      {Map<String, String> params,
+      Map<String, String> data,
+      Map<String, String> headers,
+      Map<String, dynamic> extra,
+      bool needLoading}) async {
+    return _request(uri,
+        method: 'POST',
+        data: data,
+        params: params,
+        headers: headers,
+        extra: extra,
+        needLoading: needLoading);
   }
 
   static handleResponse(Response response) {
-    return response.data['data'];
+    var res = response.data;
+    if (res is String) return jsonDecode(res.replaceAll('},]', '}]'))['data'];
+
+    return res['data'];
   }
 }

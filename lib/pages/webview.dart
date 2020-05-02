@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:fluro/fluro.dart';
-import 'package:flutter_base/common/fn.dart';
+import 'package:flutter_novel/common/fn.dart';
 
 class WebviewPage extends StatefulWidget {
   // static final routerName = '/web';

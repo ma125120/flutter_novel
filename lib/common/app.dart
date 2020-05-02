@@ -1,4 +1,4 @@
-import 'package:flutter_base/router/index.dart';
+import 'package:flutter_novel/router/index.dart';
 import 'package:flutter/material.dart';
 
 class App {

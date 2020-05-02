@@ -1,4 +1,4 @@
-name: flutter_base
+name: flutter_novel
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -35,6 +35,10 @@ dependencies:
   flutter_mobx: ^1.0.0
   dio_http_cache: ^0.2.6
   sqflite: ^1.2.2
+  device_info: ^0.4.2+2
+  battery: ^1.0.0
+  intl: ^0.16.1
+  shared_preferences: ^0.5.7
 
 dev_dependencies:
   built_value: ^6.0.0
@@ -55,8 +59,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
+  assets:
+   - img/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

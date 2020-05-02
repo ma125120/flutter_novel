@@ -1,4 +1,4 @@
-# flutter_base
+# flutter_novel
 
 A new Flutter project.
 

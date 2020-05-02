@@ -1,28 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_base/common/adapt.dart';
+import 'package:flutter_novel/common/adapt.dart';
 
-class MyTitle extends StatelessWidget {
+class TextLabel extends StatelessWidget {
+  TextLabel(
+    this.text, {
+    this.bg,
+    this.size,
+    this.padding,
+    this.margin,
+    this.color,
+  });
+
   final String text;
-
-  MyTitle(this.text, );
+  final Color bg;
+  final double size;
+  final Color color;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(text, style: TextStyle(fontWeight: FontWeight.bold),),
+      margin: margin ?? EdgeInsets.symmetric(vertical: Adapt.px(16)),
+      padding: padding ?? EdgeInsets.all(Adapt.px(8)),
+      decoration: BoxDecoration(
+        color: this.bg,
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: size ?? Adapt.px(24), color: color),
+      ),
+    );
+  }
+}
+
+class MyTitle extends StatelessWidget {
+  final String text;
+
+  MyTitle(
+    this.text,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(
+        text,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
 
 ImageProvider myImage(String url) {
-  return CachedNetworkImageProvider(url,);
+  return CachedNetworkImageProvider(
+    url,
+  );
 }
 
 class MyAvatar extends StatelessWidget {
   final String url;
   final double radius;
-  MyAvatar(this.url, { this.radius = 54.0 });
+  MyAvatar(this.url, {this.radius = 54.0});
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +95,18 @@ class ScrollHeader extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.end,
     this.bgColor = const Color.fromRGBO(0, 0, 0, .6),
     this.opacity = 0.0,
-  }): assert(child != null);
+  }) : assert(child != null);
 
   @override
   Widget build(BuildContext context) {
     return FlexibleSpaceBar(
       // collapseMode: CollapseMode.pin,
-      title: isShowTitle ? Opacity(child: title, opacity: opacity,) : null,
+      title: isShowTitle
+          ? Opacity(
+              child: title,
+              opacity: opacity,
+            )
+          : null,
       background: Container(
         height: topHeight,
         decoration: BoxDecoration(
@@ -94,10 +140,15 @@ class MyFadeHeader extends StatelessWidget {
     @required this.child,
     this.opacity = 0.0,
     this.show = false,
-  }): assert(opacity >= 0.0 && opacity <= 1.0);
+  }) : assert(opacity >= 0.0 && opacity <= 1.0);
 
   @override
   Widget build(BuildContext context) {
-    return show ? Opacity(child: child, opacity: opacity,) : Text('');
+    return show
+        ? Opacity(
+            child: child,
+            opacity: opacity,
+          )
+        : Text('');
   }
 }

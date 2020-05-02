@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_study_app/pages/scroll/sliver.dart';
-// import 'package:flutter_base/pages/demo/index/npc.dart';
+// import 'package:flutter_novel/pages/demo/index/npc.dart';
 
 class SettingPage extends StatefulWidget {
 

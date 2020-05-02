@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_base/store/index.dart';
-import 'package:flutter_base/pages/demo/sqflite.dart';
+import 'package:flutter_novel/store/index.dart';
+import 'package:flutter_novel/pages/demo/sqflite.dart';
 
 final counter = Counter();
 
