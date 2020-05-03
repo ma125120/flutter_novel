@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
         MyWatchRoute(),
       ],
       onGenerateRoute: App.router.generator,
-      initialRoute: Routes.index,
+      initialRoute: Routes.search,
       title: 'Flutter Demo',
       theme: MyThemeData.build(context),
       darkTheme: ThemeData(

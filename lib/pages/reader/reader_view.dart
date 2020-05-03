@@ -49,6 +49,7 @@ class ReaderView extends StatelessWidget {
           TextSpan(
               text: content,
               style: TextStyle(
+                  color: Color(ReaderConfig.color),
                   // wordSpacing: -10,
                   fontSize: (ReaderConfig.fontSize),
                   height: ReaderConfig.lineHeight))

@@ -69,6 +69,7 @@ class API {
 
   static Future<Novel> getLatest(Novel item) async {
     String id = item.id;
+
     Map res = await _getRes(
         'https://infosxs.pigqq.com/BookFiles/Html/${_get3(id)}/$id/info.html');
     item.lastChapter = res['LastChapter'];
@@ -99,9 +100,22 @@ class API {
 
     return Article.fromJson(res);
   }
+
+  static getDetail(String id) async {
+    Map res = await _getRes(
+        'https://infosxs.pigqq.com/BookFiles/Html/${_get3(id)}/$id/info.html');
+    res['LastChapterId'] = res['LastChapterId'].toString();
+    res['Id'] = res['Id'].toString();
+    res['CId'] = res['CId'].toString();
+    return res;
+  }
 }
 
 _get3(String str) {
+  if (str.length <= 3) return '1';
+  if (str.length <= 4) return int.parse(str.substring(0, 1)) + 1;
+  if (str.length <= 5) return int.parse(str.substring(0, 2)) + 1;
+
   return int.parse(str.substring(0, 3)) + 1;
 }
 

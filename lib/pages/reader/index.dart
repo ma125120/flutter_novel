@@ -148,7 +148,7 @@ class _ReaderPageState extends State<ReaderPage> {
     if (currentArticle == null || list == null) {
       return Scaffold(
         body: Container(
-          color: MyConst.readerBg,
+          color: Color(ReaderConfig.bgColor),
         ),
       );
     }
@@ -157,7 +157,7 @@ class _ReaderPageState extends State<ReaderPage> {
       onWillPop: beforeUpload,
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: MyConst.readerBg,
+        backgroundColor: Color(ReaderConfig.bgColor),
         drawer: buildDrawer(),
         body: Stack(
           fit: StackFit.expand,
@@ -170,7 +170,7 @@ class _ReaderPageState extends State<ReaderPage> {
                 child: Container(
                   width: double.infinity,
                   height: double.infinity,
-                  color: MyConst.readerBg,
+                  color: Color(ReaderConfig.bgColor),
                 )),
             buildPageView(),
             buildMenu(),
@@ -197,6 +197,9 @@ class _ReaderPageState extends State<ReaderPage> {
       chapters: list,
       articleIndex: currentArticle.index,
       onTap: hideMenu,
+      refreshUI: () {
+        setState(() {});
+      },
       openDrawer: () {
         _scaffoldKey.currentState.openDrawer();
       },
@@ -244,8 +247,13 @@ class _ReaderPageState extends State<ReaderPage> {
 
   resetContent([needHideMenu = false]) async {
     Timer(Duration(milliseconds: 20), () {
-      pageController?.jumpToPage(
-          (info.currentPageIndex ?? 0) + (prevArticle?.pageCount ?? 0));
+      try {
+        pageController?.jumpToPage(
+            (info.currentPageIndex ?? 0) + (prevArticle?.pageCount ?? 0));
+      } catch (err) {
+        print(err);
+      }
+
       if (needHideMenu) {
         hideMenu();
       }
@@ -262,7 +270,7 @@ class _ReaderPageState extends State<ReaderPage> {
   buildPageView() {
     if (currentArticle == null) {
       return Container(
-        color: MyConst.readerBg,
+        color: Color(ReaderConfig.bgColor),
       );
     }
 

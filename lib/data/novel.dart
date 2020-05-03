@@ -43,8 +43,13 @@ class NovelProvider {
 
   Future<Novel> update(Novel novel) async {
     await open();
-    await db.update(_tableName, novel.toJson(),
-        whereArgs: [novel.id], where: 'id = ?');
+    try {
+      await db.update(_tableName, novel.toJson(),
+          whereArgs: [novel.id], where: 'id = ?');
+    } catch (err) {
+      print(err);
+    }
+
     return novel;
   }
 

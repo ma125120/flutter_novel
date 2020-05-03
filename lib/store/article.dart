@@ -41,7 +41,7 @@ abstract class _ArticleStore with Store {
     // 第一次，需要存储到数据库
     if (_list == null || _list.length == 0) {
       _list = await API.getChapters(novel.id);
-      articleProvider.insertMany(novel.id, _list);
+      await articleProvider.insertMany(novel.id, _list);
     } else if (novel.canUpdate) {
       // 有更新的时候，更新数据库的最后一条的nextId，然后插入之后的所有
       List<Article> remoteList = await API.getChapters(novel.id);

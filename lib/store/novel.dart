@@ -1,4 +1,5 @@
 import 'package:flutter_novel/common/http/API.dart';
+import 'package:flutter_novel/data/article.dart';
 // import 'package:flutter_novel/data/article.dart';
 import 'package:flutter_novel/data/novel.dart';
 import 'package:flutter_novel/models/novel.dart';
@@ -27,12 +28,18 @@ abstract class _NovelStore with Store {
       }
     }
     list = _list;
+
     return list;
   }
 
   @action
   delete(String id, int idx) async {
     await novelProvider.delete(id);
+    try {
+      articleProvider.deleteAll(id);
+    } catch (err) {
+      print(err);
+    }
     List<Novel> _list = await novelProvider.getShelf();
     list = _list;
   }

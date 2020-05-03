@@ -10,8 +10,10 @@ import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/common/http/API.dart';
 import 'package:flutter_novel/components/article/img.dart';
 import 'package:flutter_novel/components/article/index.dart';
+import 'package:flutter_novel/components/index.dart';
 import 'package:flutter_novel/data/novel.dart';
 import 'package:flutter_novel/models/novel.dart';
+import 'package:flutter_novel/router/index.dart';
 import 'package:flutter_novel/store/novel.dart';
 
 class SearchPage extends StatefulWidget {
@@ -28,7 +30,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String text = '';
+  String text = '剑来';
   List<Novel> list = [];
 
   EasyRefreshController _ctrl;
@@ -150,13 +152,14 @@ class _SearchPageState extends State<SearchPage> {
         text = val;
       },
       initialValue: text,
+      decoration: InputDecoration(hintText: '请输入书名或作者'),
       onFieldSubmitted: (val) {
         startRefresh();
       },
     );
     return Container(
       height: kToolbarHeight / 2,
-      padding: EdgeInsets.symmetric(horizontal: Adapt.px(16)),
+      padding: EdgeInsets.symmetric(horizontal: Adapt.px(20)),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(kToolbarHeight),
           color: Colors.white),
@@ -173,10 +176,17 @@ class _SearchPageState extends State<SearchPage> {
 
           Widget row = buildItem(item, idx);
 
-          return Container(
-            padding: EdgeInsets.only(top: gap, left: gap, right: gap),
-            decoration: BoxDecoration(color: Colors.white),
-            child: row,
+          return MyInk(
+            child: Container(
+              padding: EdgeInsets.only(top: gap, left: gap, right: gap),
+              decoration: BoxDecoration(color: Colors.white),
+              child: row,
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, Routes.detail, arguments: {
+                'id': item.id,
+              });
+            },
           );
         },
         childCount: list?.length,
@@ -187,7 +197,10 @@ class _SearchPageState extends State<SearchPage> {
   buildItem(Novel item, int idx) {
     return Row(
       children: <Widget>[
-        MyNetImage(item.img),
+        MyNetImage(
+          item.img,
+          width: Adapt.px(180),
+        ),
         Container(
           width: Adapt.px(16),
         ),

@@ -7,6 +7,7 @@ import 'dart:async';
 
 import 'package:flutter_novel/models/article.dart';
 import 'package:flutter_novel/pages/reader/reader_config.dart';
+// import 'package:flutter_novel/pages/reader/reader_utils.dart';
 import 'package:wakelock/wakelock.dart';
 
 class ReaderMenu extends StatefulWidget {
@@ -21,6 +22,7 @@ class ReaderMenu extends StatefulWidget {
 
   final VoidCallback onPreviousArticle;
   final VoidCallback onNextArticle;
+  final VoidCallback refreshUI;
   final void Function(Article chapter) onToggleChapter;
 
   ReaderMenu(
@@ -33,6 +35,7 @@ class ReaderMenu extends StatefulWidget {
       this.openDrawer,
       this.onRefresh,
       this.onInitCb,
+      this.refreshUI,
       this.onToggleChapter});
 
   @override
@@ -48,6 +51,24 @@ class _ReaderMenuState extends State<ReaderMenu>
   bool isTipVisible = false;
   bool isShowSetting = false;
   bool isLight = true;
+  List<int> bgColors = [
+    0xFFe3c394,
+    0xFFd9caac,
+    0xFFe8e0c2,
+    0xFFd0b897,
+    0xFFbeb1c2,
+    0xFFd1d1d1,
+    0xFFbbc9d3,
+    0xFFe0d1ca
+  ];
+  List<int> colors = [
+    0Xff000000,
+    0xFF333333,
+    0xFF666666,
+    0xFF999999,
+    0xFFCCCCCC,
+    0xFFFFFFFF,
+  ];
 
   @override
   initState() {
@@ -271,7 +292,7 @@ class _ReaderMenuState extends State<ReaderMenu>
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Color(0xff111111),
           ),
           padding: EdgeInsets.only(
             bottom: Adapt.paddingBottom() + gap,
@@ -279,60 +300,130 @@ class _ReaderMenuState extends State<ReaderMenu>
             left: gap,
             right: gap,
           ),
-          child: Row(
+          child: Column(
             children: <Widget>[
-              Expanded(
-                child: _renderInkItem(
-                  left: Text(
-                    'Aa-',
-                    textAlign: TextAlign.center,
-                    style: textStyle,
+              _renderColorArea(
+                  list: bgColors,
+                  title: '背景：',
+                  value: ReaderConfig.bgColor,
+                  onChange: (color) {
+                    ReaderConfig.changeBgColor(color);
+                    widget.refreshUI();
+                  }),
+              _renderColorArea(
+                  list: colors,
+                  title: '颜色：',
+                  value: ReaderConfig.color,
+                  onChange: (color) {
+                    ReaderConfig.changeColor(color);
+                    widget.refreshUI();
+                  }),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: _renderInkItem(
+                      left: Text(
+                        'Aa-',
+                        textAlign: TextAlign.center,
+                        style: textStyle,
+                      ),
+                      leftCb: () {
+                        changeAndRefresh(() {
+                          ReaderConfig.changeFontSize(-1);
+                        });
+                      },
+                      right: Text('Aa+',
+                          textAlign: TextAlign.center, style: textStyle),
+                      rightCb: () {
+                        changeAndRefresh(() {
+                          ReaderConfig.changeFontSize(1);
+                        });
+                      },
+                      value: ReaderConfig.fontSize.toString(),
+                    ),
                   ),
-                  leftCb: () {
-                    changeAndRefresh(() {
-                      ReaderConfig.changeFontSize(-1);
-                    });
-                  },
-                  right: Text('Aa+',
-                      textAlign: TextAlign.center, style: textStyle),
-                  rightCb: () {
-                    changeAndRefresh(() {
-                      ReaderConfig.changeFontSize(1);
-                    });
-                  },
-                  value: ReaderConfig.fontSize.toString(),
-                ),
-              ),
-              Container(
-                width: 24,
-              ),
-              Expanded(
-                child: _renderInkItem(
-                  left: Icon(
-                    Icons.unfold_less,
-                    color: color,
+                  Container(
+                    width: 24,
                   ),
-                  leftCb: () {
-                    changeAndRefresh(() {
-                      ReaderConfig.changeLineHeight(-0.1);
-                    });
-                  },
-                  right: Icon(
-                    Icons.unfold_more,
-                    color: color,
+                  Expanded(
+                    child: _renderInkItem(
+                      left: Icon(
+                        Icons.unfold_less,
+                        color: color,
+                      ),
+                      leftCb: () {
+                        changeAndRefresh(() {
+                          ReaderConfig.changeLineHeight(-0.1);
+                        });
+                      },
+                      right: Icon(
+                        Icons.unfold_more,
+                        color: color,
+                      ),
+                      rightCb: () {
+                        changeAndRefresh(() {
+                          ReaderConfig.changeLineHeight(0.1);
+                        });
+                      },
+                      value: ReaderConfig.lineHeight.toStringAsFixed(1),
+                    ),
                   ),
-                  rightCb: () {
-                    changeAndRefresh(() {
-                      ReaderConfig.changeLineHeight(0.1);
-                    });
-                  },
-                  value: ReaderConfig.lineHeight.toStringAsFixed(1),
-                ),
+                ],
               ),
             ],
           ),
         )
       ],
+    );
+  }
+
+  _renderColorArea({
+    List<int> list,
+    int value,
+    onChange,
+    String title,
+  }) {
+    return Container(
+      width: Adapt.width,
+      height: 60,
+      margin: EdgeInsets.only(bottom: 16),
+      child: Row(
+        children: <Widget>[
+          Text(
+            title ?? '背景：',
+            style: TextStyle(color: Colors.white),
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              primary: false,
+              children: list.map((v) {
+                return MyInk(
+                  onTap: () {
+                    onChange(v);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 16),
+                    width: 60,
+                    height: 60,
+                    child: Center(
+                      child: Text(
+                        v == value ? '√' : '',
+                        style: TextStyle(color: Colors.red, fontSize: 32),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        color: Color(v),
+                        borderRadius: BorderRadius.circular(80)),
+                    // color: Color(v),
+                  ),
+                );
+              }).toList(),
+              scrollDirection: Axis.horizontal,
+            ),
+          )
+        ],
+      ),
     );
   }
 
