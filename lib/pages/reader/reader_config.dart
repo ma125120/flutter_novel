@@ -18,7 +18,7 @@ class ReaderConfig {
   static double get fontSize => ref?.getDouble('fontSize') ?? 18.0;
   static double get lineHeight => ref?.getDouble('lineHeight') ?? 1.5;
   static int get bgColor => ref?.getInt('bgColor') ?? 0xFFe3c394;
-  static int get color => ref?.getInt('color') ?? 0xFFe3c394;
+  static int get color => ref?.getInt('color') ?? 0xFF000000;
 
   static changeColor(int color) {
     ref.setInt('color', color);

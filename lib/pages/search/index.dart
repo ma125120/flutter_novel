@@ -30,7 +30,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String text = '剑来';
+  String text = '';
   List<Novel> list = [];
 
   EasyRefreshController _ctrl;
@@ -152,7 +152,10 @@ class _SearchPageState extends State<SearchPage> {
         text = val;
       },
       initialValue: text,
-      decoration: InputDecoration(hintText: '请输入书名或作者'),
+      decoration: InputDecoration(
+          hintText: '请输入书名或作者',
+          contentPadding:
+              EdgeInsets.only(top: Adapt.px(16), bottom: Adapt.px(16))),
       onFieldSubmitted: (val) {
         startRefresh();
       },
