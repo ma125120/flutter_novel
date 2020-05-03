@@ -12,7 +12,7 @@ class MyNetImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: src,
-      width: width ?? Adapt.px(140),
+      width: width ?? Adapt.px(160),
     );
   }
 }

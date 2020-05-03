@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
-import 'package:flutter_easyrefresh/phoenix_footer.dart';
-import 'package:flutter_easyrefresh/phoenix_header.dart';
+// import 'package:flutter_easyrefresh/phoenix_footer.dart';
+// import 'package:flutter_easyrefresh/phoenix_header.dart';
 import 'package:flutter_novel/common/adapt.dart';
 import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/common/http/API.dart';
@@ -28,7 +28,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String text = '剑来';
+  String text = '';
   List<Novel> list = [];
 
   EasyRefreshController _ctrl;

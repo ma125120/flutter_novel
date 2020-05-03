@@ -39,6 +39,7 @@ dependencies:
   battery: ^1.0.0
   intl: ^0.16.1
   shared_preferences: ^0.5.7
+  wakelock: ^0.1.4+1
 
 dev_dependencies:
   built_value: ^6.0.0

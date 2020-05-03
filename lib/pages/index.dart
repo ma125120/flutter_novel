@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_novel/pages/tabs/bookshelf/index.dart';
 // import 'package:flutter_novel/pages/webview.dart';
-import 'package:flutter_novel/pages/tabs/home.dart';
+// import 'package:flutter_novel/pages/tabs/home.dart';
 import 'package:flutter_novel/pages/tabs/setting.dart';
 
 class IndexPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _IndexPageState extends State<IndexPage> {
   static int index = 0;
 
   final PageController _pageController = PageController();
-  
+
   final List<Widget> pages = [
     BookShelfPage(),
     SettingPage(),
@@ -47,24 +47,26 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Scaffold(
-        body: PageView.builder(
-          itemBuilder: (context, index) {
-            return pages[index];
-          },
-          itemCount: pages.length,
-          controller: _pageController,
-          onPageChanged: (idx) {
-            setState(() {
-              index = idx;
-            });
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
+        child: Scaffold(
+      body: PageView.builder(
+        itemBuilder: (context, index) {
+          return pages[index];
+        },
+        itemCount: pages.length,
+        controller: _pageController,
+        onPageChanged: (idx) {
+          setState(() {
+            index = idx;
+          });
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: index,
           onTap: (idx) {
-            _pageController.animateToPage(idx, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+            _pageController.animateToPage(idx,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut);
           },
           items: [
             BottomNavigationBarItem(
@@ -75,9 +77,7 @@ class _IndexPageState extends State<IndexPage> {
               icon: Icon(Icons.settings),
               title: Text('设置'),
             ),
-          ]
-        ),
-      )
-    );
+          ]),
+    ));
   }
 }

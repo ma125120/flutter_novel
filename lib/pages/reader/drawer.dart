@@ -25,13 +25,15 @@ class ReaderDrawer extends StatefulWidget {
 }
 
 class _ReaderDrawerState extends State<ReaderDrawer> {
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController(keepScrollOffset: true);
+  double itemHeight = 12.0 * 2 + 20;
+
   @override
   initState() {
     super.initState();
-    double itemHeight = Adapt.px(24 * 2 + 32);
-    double offset = itemHeight * (widget.index);
-    _scrollController = ScrollController(initialScrollOffset: offset);
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      toNow();
+    });
   }
 
   @override
@@ -41,9 +43,8 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
   }
 
   toNow() {
-    double itemHeight = Adapt.px(24 * 2 + 32);
-    double offset = itemHeight * (widget.index);
-    _scrollController.jumpTo(offset);
+    double _offset = itemHeight * (widget.index - 1);
+    _scrollController.jumpTo(_offset);
     // _scrollCtrl.animateTo(offset,
     //     duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
@@ -53,6 +54,7 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
       builder: (_) {
         List<Article> list = articleStore.list;
         return ListView.builder(
+          itemExtent: itemHeight,
           controller: _scrollController,
           padding: EdgeInsets.zero,
           itemBuilder: (__, idx) {
@@ -66,19 +68,19 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
                     child: TextLabel(
                       item.name,
                       color: item.id == widget.id ? MyConst.primary : null,
-                      size: Adapt.px(28),
-                      padding: EdgeInsets.symmetric(
-                          vertical: Adapt.px(24), horizontal: Adapt.px(16)),
+                      size: 14,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                       margin: EdgeInsets.all(0),
                     ),
                   ),
                   if (item.content != null)
                     TextLabel(
                       '已缓存',
-                      size: Adapt.px(24),
+                      size: 12,
                       color: MyConst.lowTextColor,
-                      padding: EdgeInsets.symmetric(
-                          vertical: Adapt.px(24), horizontal: Adapt.px(16)),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                       margin: EdgeInsets.all(0),
                     )
                 ],
@@ -121,7 +123,10 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    Widget listview = buildList();
+    Widget listview = CupertinoScrollbar(
+      child: buildList(),
+      controller: _scrollController,
+    );
 
     return Stack(
       children: <Widget>[
@@ -132,6 +137,9 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
             children: <Widget>[
               buildHeader(context),
               Expanded(child: listview),
+              Container(
+                height: 12,
+              ),
             ],
           ),
           color: MyConst.drawerBgColor,
@@ -158,13 +166,17 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.place, color: Colors.orange),
+            Icon(
+              Icons.place,
+              color: Colors.orange,
+              size: Adapt.px(36),
+            ),
             Container(
               height: Adapt.px(8),
             ),
             Text(
               '当前',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.grey, fontSize: Adapt.px(24)),
             ),
           ],
         ),

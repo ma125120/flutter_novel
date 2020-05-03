@@ -30,6 +30,7 @@ class TextLabel extends StatelessWidget {
       ),
       child: Text(
         text,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(fontSize: size ?? Adapt.px(24), color: color),
       ),
     );

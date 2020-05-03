@@ -39,7 +39,10 @@ class ReaderView extends StatelessWidget {
     return Container(
       // constraints: BoxConstraints(minHeight: Adapt.height / 2),
       color: Colors.transparent,
-      margin: EdgeInsets.fromLTRB(15, ReaderUtils.topOffset, 10,
+      margin: EdgeInsets.fromLTRB(
+          ReaderUtils.leftOffset,
+          ReaderUtils.topOffset,
+          ReaderUtils.rightOffset,
           Adapt.paddingBottom() + ReaderUtils.bottomOffset),
       child: Text.rich(
         TextSpan(children: [

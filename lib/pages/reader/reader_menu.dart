@@ -7,10 +7,12 @@ import 'dart:async';
 
 import 'package:flutter_novel/models/article.dart';
 import 'package:flutter_novel/pages/reader/reader_config.dart';
+import 'package:wakelock/wakelock.dart';
 
 class ReaderMenu extends StatefulWidget {
   final List<Article> chapters;
   final int articleIndex;
+  final String name;
 
   final VoidCallback onTap;
   final VoidCallback openDrawer;
@@ -25,6 +27,7 @@ class ReaderMenu extends StatefulWidget {
       {this.chapters,
       this.articleIndex,
       this.onTap,
+      this.name,
       this.onPreviousArticle,
       this.onNextArticle,
       this.openDrawer,
@@ -44,6 +47,7 @@ class _ReaderMenuState extends State<ReaderMenu>
   double progressValue;
   bool isTipVisible = false;
   bool isShowSetting = false;
+  bool isLight = true;
 
   @override
   initState() {
@@ -58,6 +62,13 @@ class _ReaderMenuState extends State<ReaderMenu>
       setState(() {});
     });
     animationController.forward();
+
+    init();
+  }
+
+  init() async {
+    isLight = await Wakelock.isEnabled;
+    setState(() {});
   }
 
   @override
@@ -89,6 +100,11 @@ class _ReaderMenuState extends State<ReaderMenu>
       left: 0,
       right: 0,
       child: AppBar(
+        title: Text(
+          widget.name ?? '',
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
         backgroundColor: Colors.black,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
@@ -97,6 +113,18 @@ class _ReaderMenuState extends State<ReaderMenu>
           },
         ),
         actions: <Widget>[
+          FlatButton(
+            child: Text(
+              '${isLight ? '取消' : '保持'}常亮',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              bool on = !isLight;
+              Wakelock.toggle(on: on);
+              isLight = on;
+              setState(() {});
+            },
+          ),
           FlatButton(
             child: Text(
               '刷新',

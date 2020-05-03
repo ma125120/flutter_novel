@@ -54,6 +54,9 @@ class _MyAppState extends State<MyApp> {
       initialRoute: Routes.index,
       title: 'Flutter Demo',
       theme: MyThemeData.build(context),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+      ),
     );
 
     // return app;

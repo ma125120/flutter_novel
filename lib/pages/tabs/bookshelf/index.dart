@@ -11,7 +11,7 @@ import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/components/article/img.dart';
 import 'package:flutter_novel/components/article/index.dart';
 import 'package:flutter_novel/components/index.dart';
-import 'package:flutter_novel/data/novel.dart';
+// import 'package:flutter_novel/data/novel.dart';
 import 'package:flutter_novel/models/novel.dart';
 import 'package:flutter_novel/router/index.dart';
 import 'package:flutter_novel/store/index.dart';

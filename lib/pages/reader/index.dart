@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_novel/common/adapt.dart';
 import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/common/http/API.dart';
-import 'package:flutter_novel/components/article/index.dart';
 import 'package:flutter_novel/components/index.dart';
 import 'package:flutter_novel/data/article.dart';
 import 'package:flutter_novel/data/novel.dart';
@@ -20,7 +19,7 @@ import 'package:flutter_novel/pages/reader/reader_menu.dart';
 import 'package:flutter_novel/pages/reader/reader_utils.dart';
 import 'package:flutter_novel/pages/reader/reader_view.dart';
 import 'package:flutter_novel/store/article.dart';
-import 'package:flutter_novel/store/index.dart';
+import 'package:wakelock/wakelock.dart';
 
 enum PageJumpType { stay, firstPage, lastPage }
 
@@ -60,6 +59,7 @@ class _ReaderPageState extends State<ReaderPage> {
   Article prevArticle;
   Article currentArticle;
   Article nextArticle;
+  Timer timer;
 
   List<Article> list = [];
 
@@ -72,19 +72,16 @@ class _ReaderPageState extends State<ReaderPage> {
   }
 
   init() async {
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
-      BotToast.showLoading();
-    });
-    // BotToast.showLoading();
-    Novel novel = widget.novel;
-    info = novel;
-    List<Article> _list = await articleStore.getArticleAllInfo(novel);
-    list = _list;
+    withLoading(() async {
+      Novel novel = widget.novel;
+      info = novel;
+      List<Article> _list = await articleStore.getArticleAllInfo(novel);
+      list = _list;
 
-    await getAllArticle();
-    setState(() {});
-    resetContent(false);
-    BotToast.closeAllLoading();
+      await getAllArticle();
+      setState(() {});
+      resetContent(false);
+    });
   }
 
   getAllArticle([String id]) async {
@@ -96,6 +93,7 @@ class _ReaderPageState extends State<ReaderPage> {
       info.currentChapterId = cid;
       novelProvider.update(info);
     }
+
     currentArticle = await getArticle(dbName, cid);
 
     if (currentArticle != null) {
@@ -108,22 +106,24 @@ class _ReaderPageState extends State<ReaderPage> {
     if (chapterId == null) return null;
 
     Article article = await articleProvider.getArticle(dbName, chapterId);
+
     if (article != null) {
-      article = getArticlePageOffsets(article);
+      article = await getArticlePageOffsets(article);
     }
 
     return article;
   }
 
-  getArticlePageOffsets(Article article) {
+  getArticlePageOffsets(Article article) async {
     var contentHeight = Adapt.height -
         // topSafeHeight -
         ReaderUtils.topOffset -
         Adapt.paddingBottom() -
         ReaderUtils.bottomOffset -
         20;
-    var contentWidth = Adapt.width - 15 - 10;
-    article.pageOffsets = ReaderPageAgent.getPageOffsets(
+    var contentWidth =
+        Adapt.width - ReaderUtils.leftOffset - ReaderUtils.rightOffset;
+    article.pageOffsets = await ReaderPageAgent.getPageOffsets(
         article.content, contentHeight, contentWidth, ReaderConfig.fontSize);
     article.index = list.indexWhere((v) => v.id == article.id);
     return article;
@@ -139,6 +139,7 @@ class _ReaderPageState extends State<ReaderPage> {
   @override
   void dispose() {
     pageController.dispose();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -152,28 +153,38 @@ class _ReaderPageState extends State<ReaderPage> {
       );
     }
 
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: MyConst.readerBg,
-      drawer: buildDrawer(),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Positioned(
-              left: 0,
-              top: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: MyConst.readerBg,
-              )),
-          buildPageView(),
-          buildMenu(),
-        ],
+    return WillPopScope(
+      onWillPop: beforeUpload,
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: MyConst.readerBg,
+        drawer: buildDrawer(),
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Positioned(
+                left: 0,
+                top: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: MyConst.readerBg,
+                )),
+            buildPageView(),
+            buildMenu(),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<bool> beforeUpload() async {
+    SystemChrome.setEnabledSystemUIOverlays(
+        [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    Wakelock.disable();
+    return true;
   }
 
   buildMenu() {
@@ -182,6 +193,7 @@ class _ReaderPageState extends State<ReaderPage> {
     }
 
     return ReaderMenu(
+      name: currentArticle.name,
       chapters: list,
       articleIndex: currentArticle.index,
       onTap: hideMenu,
@@ -193,32 +205,46 @@ class _ReaderPageState extends State<ReaderPage> {
       },
       onRefresh: refreshArticle,
       onPreviousArticle: () async {
-        info.currentPageIndex = 0;
-        await getAllArticle(currentArticle.prevId);
-        setState(() {});
-        resetContent();
-        // resetContent(currentArticle.prevId, PageJumpType.firstPage);
+        withLoading(() async {
+          info.currentPageIndex = 0;
+          nextArticle = currentArticle;
+          currentArticle = prevArticle;
+          prevArticle = await getArticle(info.id, currentArticle.prevId);
+          setState(() {});
+          resetContent();
+        });
       },
       onNextArticle: () async {
-        info.currentPageIndex = 0;
-        await getAllArticle(currentArticle.nextId);
-        setState(() {});
-        resetContent();
-        // resetContent(currentArticle.nextId, PageJumpType.firstPage);
+        withLoading(() async {
+          info.currentPageIndex = 0;
+          prevArticle = currentArticle;
+          currentArticle = nextArticle;
+          nextArticle = await getArticle(info.id, currentArticle.nextId);
+          setState(() {});
+          resetContent();
+        });
       },
       onToggleChapter: (Article chapter) async {
-        info.currentPageIndex = 0;
-        await getAllArticle(chapter.id);
-        setState(() {});
-        resetContent();
-        // resetContent(chapter.id, PageJumpType.firstPage);
+        withLoading(() async {
+          info.currentPageIndex = 0;
+          await getAllArticle(chapter.id);
+          setState(() {});
+          resetContent();
+        });
       },
     );
   }
 
-  resetContent([needHideMenu = true]) async {
+  withLoading(cb) async {
+    BotToast.showCustomLoading(
+        toastBuilder: (cancelFunc) => MyCustomLoadingDialog());
+    await cb();
+    BotToast.closeAllLoading();
+  }
+
+  resetContent([needHideMenu = false]) async {
     Timer(Duration(milliseconds: 20), () {
-      pageController.jumpToPage(
+      pageController?.jumpToPage(
           (info.currentPageIndex ?? 0) + (prevArticle?.pageCount ?? 0));
       if (needHideMenu) {
         hideMenu();
@@ -263,11 +289,15 @@ class _ReaderPageState extends State<ReaderPage> {
       info.currentPageIndex = pageIndex;
     } else if (page >= currentArticle.pageCount - 1) {
       // 下一章
-      await getAllArticle(nextArticle.id);
+      prevArticle = currentArticle;
+      currentArticle = nextArticle;
+      nextArticle = await getArticle(info.id, currentArticle.nextId);
       info.currentPageIndex = 0;
       resetContent();
     } else if (page < 0) {
-      await getAllArticle(prevArticle.id);
+      nextArticle = currentArticle;
+      currentArticle = prevArticle;
+      prevArticle = await getArticle(info.id, currentArticle.prevId);
       info.currentPageIndex = currentArticle.pageCount - 1;
       resetContent();
     }
@@ -281,6 +311,7 @@ class _ReaderPageState extends State<ReaderPage> {
       BotToast.showText(text: '已经是第一页了');
       return;
     }
+
     pageController.previousPage(
         duration: Duration(milliseconds: 250), curve: Curves.easeOut);
   }
@@ -344,21 +375,27 @@ class _ReaderPageState extends State<ReaderPage> {
         index: currentArticle.index,
         name: widget.novel.name,
         onSelect: (Article item) async {
-          await getAllArticle(item.id);
-          info.currentPageIndex = 0;
-          resetContent();
-          Navigator.pop(context);
-          hideMenu();
+          withLoading(() async {
+            await getAllArticle(item.id);
+            info.currentPageIndex = 0;
+            info.currentChapterId = item.id;
+            novelProvider.update(info);
+            resetContent();
+            Navigator.pop(context);
+            hideMenu();
+          });
         });
   }
 
   refreshArticle() async {
-    currentArticle = await API.getArticle(info.id, currentArticle.id);
-    if (currentArticle != null) {
-      currentArticle = getArticlePageOffsets(currentArticle);
-    }
-    await articleProvider.updateChapter(info.id, currentArticle);
-    setState(() {});
-    hideMenu();
+    withLoading(() async {
+      currentArticle = await API.getArticle(info.id, currentArticle.id);
+      if (currentArticle != null) {
+        currentArticle = await getArticlePageOffsets(currentArticle);
+      }
+      await articleProvider.updateChapter(info.id, currentArticle);
+      setState(() {});
+      hideMenu();
+    });
   }
 }
