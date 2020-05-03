@@ -211,7 +211,8 @@ class _SearchPageState extends State<SearchPage> {
               item.desc,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: MyConst.mediumTextColor),
+              style: TextStyle(
+                  color: MyConst.mediumTextColor, fontSize: Adapt.px(24)),
             )
           ],
         )),
