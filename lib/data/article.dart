@@ -75,6 +75,9 @@ class ArticleProvider {
     List<Article> prevList = await getChapters(dbName);
     if (prevList.length >= nowList.length) return;
     List<Article> list = nowList.sublist(prevList.length);
+    Article last = prevList.last;
+    last.nextId = list?.first?.id;
+    await insert(dbName, last);
 
     await insertMany(dbName, list);
   }
