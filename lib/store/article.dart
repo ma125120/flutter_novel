@@ -45,17 +45,18 @@ abstract class _ArticleStore with Store {
     } else {
       // 有更新的时候，更新数据库的最后一条的nextId，然后插入之后的所有
       List<Article> remoteList = await API.getChapters(novel.id);
+
       if (remoteList.length > 0) {
         await articleProvider.updateChapters(dbName, remoteList);
       }
-      _list = remoteList;
+      _list = [..._list, ...remoteList.sublist(_list.length)];
     }
 
     novel.storeLastChapterId = _list.last?.id;
     novelProvider.update(novel);
 
     list = _list;
-    return list;
+    return _list;
 
     // String cid = novel.currentChapterId;
     // if (cid == null) {

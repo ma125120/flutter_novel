@@ -108,6 +108,7 @@ class _ReaderPageState extends State<ReaderPage> {
 
     if (article != null) {
       article = await getArticlePageOffsets(article);
+      list[article.index] = article;
     }
 
     return article;
@@ -394,6 +395,7 @@ class _ReaderPageState extends State<ReaderPage> {
   buildDrawer() {
     return ReaderDrawer(
         id: currentArticle.id,
+        list: list,
         index: currentArticle.index,
         name: widget.novel.name,
         onSelect: (Article item) async {

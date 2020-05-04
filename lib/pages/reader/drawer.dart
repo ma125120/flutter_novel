@@ -4,17 +4,17 @@ import 'package:flutter_novel/common/adapt.dart';
 import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/components/index.dart';
 import 'package:flutter_novel/models/article.dart';
-import 'package:flutter_novel/store/article.dart';
-import 'package:flutter_novel/store/index.dart';
 
 class ReaderDrawer extends StatefulWidget {
   final String id;
   final int index;
   final String name;
+  final List<Article> list;
   final void Function(Article item) onSelect;
 
   ReaderDrawer({
     this.name,
+    this.list = const [],
     this.onSelect,
     this.id,
     this.index,
@@ -44,55 +44,51 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
 
   toNow() {
     double _offset = itemHeight * (widget.index - 1);
+    if (_offset == _scrollController.offset) return;
+
     _scrollController.jumpTo(_offset);
     // _scrollCtrl.animateTo(offset,
     //     duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   buildList() {
-    return Observer(
-      builder: (_) {
-        List<Article> list = articleStore.list;
-        return ListView.builder(
-          itemExtent: itemHeight,
-          controller: _scrollController,
-          padding: EdgeInsets.zero,
-          itemBuilder: (__, idx) {
-            Article item = list[idx];
+    List<Article> list = widget.list;
+    return ListView.builder(
+      itemExtent: itemHeight,
+      controller: _scrollController,
+      padding: EdgeInsets.zero,
+      itemBuilder: (__, idx) {
+        Article item = list[idx];
 
-            return MyInk(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: TextLabel(
-                      item.name,
-                      color: item.id == widget.id ? MyConst.primary : null,
-                      size: 14,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      margin: EdgeInsets.all(0),
-                    ),
-                  ),
-                  if (item.content != null)
-                    TextLabel(
-                      '已缓存',
-                      size: 12,
-                      color: MyConst.lowTextColor,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                      margin: EdgeInsets.all(0),
-                    )
-                ],
+        return MyInk(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: TextLabel(
+                  item.name,
+                  color: item.id == widget.id ? MyConst.primary : null,
+                  size: 14,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  margin: EdgeInsets.all(0),
+                ),
               ),
-              onTap: () {
-                widget.onSelect(item);
-              },
-            );
+              if (item.content != null)
+                TextLabel(
+                  '已缓存',
+                  size: 12,
+                  color: MyConst.lowTextColor,
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  margin: EdgeInsets.all(0),
+                )
+            ],
+          ),
+          onTap: () {
+            widget.onSelect(item);
           },
-          itemCount: list.length,
         );
       },
+      itemCount: list.length,
     );
   }
 

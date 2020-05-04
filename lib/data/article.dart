@@ -62,6 +62,7 @@ class ArticleProvider {
       getDbName(dbName),
       // columns: ['id', 'name', 'volumeName', 'prevId', 'nextId'],
     );
+
     return maps.map((v) => Article.fromJson(v)).toList();
   }
 
@@ -73,11 +74,12 @@ class ArticleProvider {
 
   updateChapters(String dbName, List<Article> nowList) async {
     List<Article> prevList = await getChapters(dbName);
+
     if (prevList.length >= nowList.length) return;
     List<Article> list = nowList.sublist(prevList.length);
     Article last = prevList.last;
     last.nextId = list?.first?.id;
-    await insert(dbName, last);
+    await updateChapter(dbName, last);
 
     await insertMany(dbName, list);
   }
@@ -92,9 +94,9 @@ class ArticleProvider {
         Article _item = await API.getArticle(dbName, chapterId);
         _item.volumeName = item.volumeName;
         item = _item;
-        await updateChapter(dbName, item);
       }
-      // print(item.content);
+      await updateChapter(dbName, item);
+
       return item;
     }
 
