@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:flutter_novel/common/adapt.dart';
+
 import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/common/fn.dart';
 import 'package:flutter_novel/common/http/API.dart';

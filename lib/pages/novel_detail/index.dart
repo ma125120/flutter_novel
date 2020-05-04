@@ -8,7 +8,7 @@ import 'package:flutter_novel/common/http/API.dart';
 import 'package:flutter_novel/components/article/img.dart';
 import 'package:flutter_novel/components/index.dart';
 import 'package:flutter_novel/data/novel.dart';
-import 'package:flutter_novel/models/article.dart';
+
 import 'package:flutter_novel/models/novel.dart';
 import 'package:flutter_novel/router/index.dart';
 import 'package:flutter_novel/store/novel.dart';
@@ -119,7 +119,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
 
   buildBottom() {
     return Positioned(
-      bottom: 0,
+      bottom: -6,
       left: 0,
       // right: 0,
       width: Adapt.width,

@@ -39,7 +39,7 @@ class Routes {
 
   static defineRoute(String routePath,
       {Handler handler,
-      TransitionType transitionType = TransitionType.native}) {
+      TransitionType transitionType = TransitionType.cupertino}) {
     _router.define(routePath, handler: handler, transitionType: transitionType);
   }
 }

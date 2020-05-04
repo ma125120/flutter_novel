@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_novel/common/adapt.dart';
-import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/common/http/API.dart';
 import 'package:flutter_novel/components/index.dart';
 import 'package:flutter_novel/data/article.dart';
@@ -72,16 +71,16 @@ class _ReaderPageState extends State<ReaderPage> {
   }
 
   init() async {
-    withLoading(() async {
-      Novel novel = widget.novel;
-      info = novel;
-      List<Article> _list = await articleStore.getArticleAllInfo(novel);
-      list = _list;
+    // withLoading(() async {
+    Novel novel = widget.novel;
+    info = novel;
+    List<Article> _list = await articleStore.getArticleAllInfo(novel);
+    list = _list;
 
-      await getAllArticle();
-      setState(() {});
-      resetContent(false);
-    });
+    await getAllArticle();
+    setState(() {});
+    resetContent(false);
+    // });
   }
 
   getAllArticle([String id]) async {
@@ -148,6 +147,21 @@ class _ReaderPageState extends State<ReaderPage> {
     if (currentArticle == null || list == null) {
       return Scaffold(
         body: Container(
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularProgressIndicator(),
+                Container(
+                  width: 16,
+                ),
+                Text(
+                  '加载中...',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
           color: Color(ReaderConfig.bgColor),
         ),
       );

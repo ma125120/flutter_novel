@@ -54,8 +54,10 @@ class _ReaderMenuState extends State<ReaderMenu>
   List<int> bgColors = [
     0xFFe3c394,
     0xFFd9caac,
+    0xFFE3EDCD,
+    0xFF121212,
     0xFFe8e0c2,
-    0xFFd0b897,
+    0xFFCCE8CF,
     0xFFbeb1c2,
     0xFFd1d1d1,
     0xFFbbc9d3,
@@ -68,6 +70,9 @@ class _ReaderMenuState extends State<ReaderMenu>
     0xFF999999,
     0xFFCCCCCC,
     0xFFFFFFFF,
+    0xDDffffff,
+    0x99ffffff,
+    0x60ffffff,
   ];
 
   @override
@@ -292,7 +297,7 @@ class _ReaderMenuState extends State<ReaderMenu>
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: Color(0xff111111),
+            color: Color(0xff1f1f1f),
           ),
           padding: EdgeInsets.only(
             bottom: Adapt.paddingBottom() + gap,
@@ -312,7 +317,7 @@ class _ReaderMenuState extends State<ReaderMenu>
                   }),
               _renderColorArea(
                   list: colors,
-                  title: '颜色：',
+                  title: '字体：',
                   value: ReaderConfig.color,
                   onChange: (color) {
                     ReaderConfig.changeColor(color);

@@ -30,7 +30,11 @@ class BookShelfPage extends StatefulWidget {
   _BookShelfPageState createState() => _BookShelfPageState();
 }
 
-class _BookShelfPageState extends State<BookShelfPage> {
+class _BookShelfPageState extends State<BookShelfPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   get list => novelStore.list;
   bool loading = false;
 
@@ -54,6 +58,7 @@ class _BookShelfPageState extends State<BookShelfPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: buildAppBar(),
