@@ -28,7 +28,6 @@ class Novel {
   @JsonKey(name: 'UpdateTime')
   String updateTime;
 
-  @JsonKey()
   int isExist = 0;
 
   // 上次存储的最后一章

@@ -15,7 +15,7 @@ class MyConst {
 
   static double gap = Adapt.px(24);
 
-  static String dbPath = '_novel';
+  static String dbPath = 'novel';
 
   static closeKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());

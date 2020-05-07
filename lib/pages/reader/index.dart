@@ -80,6 +80,7 @@ class _ReaderPageState extends State<ReaderPage> {
     await getAllArticle();
     setState(() {});
     resetContent(false);
+    BotToast.closeAllLoading();
     // });
   }
 
@@ -219,6 +220,8 @@ class _ReaderPageState extends State<ReaderPage> {
         _scaffoldKey.currentState.openDrawer();
       },
       onInitCb: () {
+        BotToast.showCustomLoading(
+            toastBuilder: (cancelFunc) => MyCustomLoadingDialog());
         init();
       },
       onRefresh: refreshArticle,
