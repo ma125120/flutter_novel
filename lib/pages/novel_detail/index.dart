@@ -32,7 +32,7 @@ class NovelDetailPage extends StatefulWidget {
 }
 
 class _NovelDetailPageState extends State<NovelDetailPage> {
-  Map info = {};
+  Map info;
 
   @override
   void initState() {
@@ -56,54 +56,57 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                expandedHeight: 240,
-                centerTitle: true,
-                floating: true,
-                pinned: true,
-                title: Text(info['Name'] ?? '书籍'),
-                flexibleSpace: FlexibleSpaceBar(
-                  stretchModes: <StretchMode>[
-                    StretchMode.zoomBackground,
-                    StretchMode.blurBackground,
-                    StretchMode.fadeTitle,
+      body: info == null
+          ? null
+          : Stack(
+              children: <Widget>[
+                CustomScrollView(
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      expandedHeight: 240,
+                      centerTitle: true,
+                      floating: true,
+                      pinned: true,
+                      title: Text(info['Name'] ?? '书籍'),
+                      flexibleSpace: FlexibleSpaceBar(
+                        stretchModes: <StretchMode>[
+                          StretchMode.zoomBackground,
+                          StretchMode.blurBackground,
+                          StretchMode.fadeTitle,
+                        ],
+                        centerTitle: true,
+                        // title: Text('书籍'),
+                        background: Stack(
+                          fit: StackFit.expand,
+                          children: <Widget>[
+                            Image.asset(
+                              'img/blur.jpg',
+                              fit: BoxFit.fill,
+                            ),
+                            DefaultTextStyle(
+                              child: buildHeader(),
+                              textAlign: TextAlign.left,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    buildGrey(),
+                    buildDesc(),
+                    buildGrey(),
+                    buildMenu(),
+                    buildGrey(),
+                    if (info['SameUserBooks'] != null &&
+                        info['SameUserBooks'].length > 0)
+                      _renderSection(title: '${info['Author'] ?? ''} 还写过'),
+                    if (info['SameUserBooks'] != null) buildUserBooks(),
                   ],
-                  centerTitle: true,
-                  // title: Text('书籍'),
-                  background: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      Image.asset(
-                        'img/blur.jpg',
-                        fit: BoxFit.fill,
-                      ),
-                      DefaultTextStyle(
-                        child: buildHeader(),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                    ],
-                  ),
                 ),
-              ),
-              buildGrey(),
-              buildDesc(),
-              buildGrey(),
-              buildMenu(),
-              buildGrey(),
-              if (info['SameUserBooks'] != null &&
-                  info['SameUserBooks'].length > 0)
-                _renderSection(title: '${info['Author'] ?? ''} 还写过'),
-              if (info['SameUserBooks'] != null) buildUserBooks(),
-            ],
-          ),
-          buildBottom(),
-        ],
-      ),
+                buildBottom(),
+              ],
+            ),
     );
   }
 
@@ -113,6 +116,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
       BotToast.showSimpleNotification(title: '已成功加入到书架');
       novelStore.getShelf();
     } catch (err) {
+      print(err);
       BotToast.showSimpleNotification(title: '可能已存在于书架，添加失败');
     }
   }
@@ -160,8 +164,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          MyNetImage(
-              'https://imgapixs.pigqq.com/BookFiles/BookImages/${info['Img']}'),
+          MyNetImage(info['Img']),
           Container(
             width: 12,
           ),

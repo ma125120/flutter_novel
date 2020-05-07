@@ -37,6 +37,7 @@ class NovelProvider {
   Future<Novel> insert(Novel novel) async {
     await open();
     novel.isExist = 1;
+    novel.updateTime = novel.updateTime ?? '暂无';
     await db.insert(_tableName, novel.toJson());
     return novel;
   }

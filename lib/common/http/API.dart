@@ -107,6 +107,10 @@ class API {
     res['LastChapterId'] = res['LastChapterId'].toString();
     res['Id'] = res['Id'].toString();
     res['CId'] = res['CId'].toString();
+    res['Img'] =
+        'https://imgapixs.pigqq.com/BookFiles/BookImages/${res['Img']}';
+    res['UpdateTime'] = res['LastTime'];
+    // print(res);
     return res;
   }
 }
