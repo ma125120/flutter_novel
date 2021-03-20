@@ -36,9 +36,11 @@ class _BatteryViewState extends State<BatteryView> {
     }
 
     var level = await Battery().batteryLevel;
-    setState(() {
-      this.batteryLevel = level / 100.0;
-    });
+    if (mounted) {
+      setState(() {
+        this.batteryLevel = level / 100.0;
+      });
+    }
   }
 
   @override

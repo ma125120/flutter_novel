@@ -99,6 +99,11 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
                   info['SameUserBooks'].length > 0)
                 _renderSection(title: '${info['Author'] ?? ''} 还写过'),
               if (info['SameUserBooks'] != null) buildUserBooks(),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 50,
+                ),
+              ),
             ],
           ),
           buildBottom(),
@@ -207,8 +212,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
     return _renderSection(
         child: Text(
           info['Desc'] ?? '',
-          style: TextStyle(
-              fontSize: 13, color: MyConst.mediumTextColor, height: 1.2),
+          style: TextStyle(fontSize: 13, height: 1.2),
         ),
         title: '简介:');
   }
@@ -234,7 +238,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
                 children: <Widget>[
                   Icon(
                     Icons.menu,
-                    color: MyConst.lowTextColor,
+                    // color: MyConst.lowTextColor,
                     size: 16,
                   ),
                   Container(
@@ -245,7 +249,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
                       children: <Widget>[
                         Text(
                           '最近更新：${info['LastTime'] ?? ''}',
-                          style: TextStyle(color: MyConst.lowTextColor),
+                          // style: TextStyle(color: MyConst.lowTextColor),
                         ),
                         Container(
                           height: 4,
@@ -253,7 +257,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
                         Text(
                           '${info['LastChapter'] ?? ''}',
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: MyConst.mediumTextColor),
+                          // style: TextStyle(color: MyConst.mediumTextColor),
                         ),
                       ],
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,7 +265,7 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
                   ),
                   Icon(
                     Icons.keyboard_arrow_right,
-                    color: MyConst.lowTextColor,
+                    // color: MyConst.lowTextColor,
                   ),
                 ],
               ),
@@ -315,22 +319,27 @@ class _NovelDetailPageState extends State<NovelDetailPage> {
               _renderColumn(children: [
                 Text(
                   '${item['Name']}',
-                  style: TextStyle(fontSize: 18, color: MyConst.highTextColor),
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
                 Container(
                   height: 12,
                 ),
                 Text(
                   '作者：${item['Author']}',
-                  style:
-                      TextStyle(fontSize: 14, color: MyConst.mediumTextColor),
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
                 Container(
                   height: 6,
                 ),
                 Text(
                   '最新：${item['LastChapter']}',
-                  style: TextStyle(fontSize: 14, color: MyConst.lowTextColor),
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
               ])
             ],

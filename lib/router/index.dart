@@ -1,5 +1,5 @@
 import 'package:fluro/fluro.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter_novel/pages/chapter/index.dart';
 import 'package:flutter_novel/pages/index.dart';
 import 'package:flutter_novel/pages/novel_detail/index.dart';
@@ -7,14 +7,14 @@ import 'package:flutter_novel/pages/reader/index.dart';
 import 'package:flutter_novel/pages/search/index.dart';
 import 'package:flutter_novel/pages/webview.dart';
 
-class MyRouter extends Router {
-  @override
-  bool pop(BuildContext context) {
-    if (Navigator.of(context).canPop()) {
-      return this.pop(context);
-    }
-    return false;
-  }
+class MyRouter extends FluroRouter {
+  // @override
+  // bool pop(BuildContext context) {
+  //   if (Navigator.of(context).canPop()) {
+  //     return this.pop(context);
+  //   }
+  //   return false;
+  // }
 }
 
 class Routes {

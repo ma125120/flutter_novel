@@ -1,4 +1,5 @@
 // import 'package:flutter/material.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_novel/models/article.dart';
 import 'package:flutter_novel/models/novel.dart';
 
@@ -94,7 +95,9 @@ class API {
     res['prevId'] = res['pid'] == -1 ? null : res['pid'].toString();
     res['nextId'] = res['nid'] == -1 ? null : res['nid'].toString();
     String content = res['content'] ?? '';
-    content = content.replaceAll(new RegExp(r'\s{4,}'), '\n        ');
+    content = content
+        .replaceAll(new RegExp(r'\<br\s*\/\>'), '')
+        .replaceAll(new RegExp(r'\s{4,}'), '\n        ');
     // .replaceAll('\r\n　　\r\n', '\r\n').replaceAll('        ', '    ');
     res['content'] = content;
 
@@ -142,6 +145,9 @@ Map mockChapters = {
 
 List<Map> formatChapters(Map map) {
   List<Map> list = [];
+  if (map == null) {
+    BotToast.showSimpleNotification(title: '网络错误，请退回再重新进入该页面');
+  }
   int total = map['list'].length;
 
   for (var i = 0; i < total; i++) {

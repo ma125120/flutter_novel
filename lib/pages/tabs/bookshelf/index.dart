@@ -60,7 +60,7 @@ class _BookShelfPageState extends State<BookShelfPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: buildAppBar(),
       body: Observer(
           builder: (_) => EasyRefresh.custom(
@@ -129,7 +129,7 @@ class _BookShelfPageState extends State<BookShelfPage>
           },
           child: Container(
             padding: EdgeInsets.only(top: gap, left: gap, right: gap),
-            decoration: BoxDecoration(color: Colors.white),
+            // decoration: BoxDecoration(color: Colors.white),
             child: buildItem(item),
           ),
         );
@@ -191,7 +191,7 @@ class _BookShelfPageState extends State<BookShelfPage>
                 Icon(
                   Icons.access_time,
                   size: Adapt.px(24),
-                  color: MyConst.mediumTextColor,
+                  // color: MyConst.mediumTextColor,
                 ),
                 Container(
                   width: Adapt.px(8),
@@ -200,7 +200,8 @@ class _BookShelfPageState extends State<BookShelfPage>
                   item.updateTime,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      color: MyConst.mediumTextColor, fontSize: Adapt.px(24)),
+                      // color: Theme.of(context).accentTextTheme.overline.color,
+                      fontSize: Adapt.px(24)),
                 )
               ],
             ),

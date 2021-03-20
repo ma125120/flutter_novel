@@ -77,7 +77,7 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
                 TextLabel(
                   '已缓存',
                   size: 12,
-                  color: MyConst.lowTextColor,
+                  // color: MyConst.lowTextColor,
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                   margin: EdgeInsets.all(0),
                 )
@@ -138,7 +138,7 @@ class _ReaderDrawerState extends State<ReaderDrawer> {
               ),
             ],
           ),
-          color: MyConst.drawerBgColor,
+          color: Theme.of(context).backgroundColor,
         ),
         Positioned(
           child: MyInk(

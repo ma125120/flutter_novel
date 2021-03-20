@@ -97,13 +97,13 @@ class _SearchPageState extends State<SearchPage> {
         SliverToBoxAdapter(
           child: Container(
             height: MyConst.gap,
-            decoration: BoxDecoration(color: Colors.white),
+            // decoration: BoxDecoration(color: Colors.white),
           ),
         )
       ],
     );
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: buildAppBar(),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -118,8 +118,9 @@ class _SearchPageState extends State<SearchPage> {
       child: Container(
           alignment: Alignment.center,
           padding: EdgeInsets.all(16),
-          child:
-              Text('暂时还没有数据', style: TextStyle(color: MyConst.lowTextColor))),
+          child: Text(
+            '暂时还没有数据',
+          )),
     );
   }
 
@@ -152,6 +153,7 @@ class _SearchPageState extends State<SearchPage> {
         text = val;
       },
       initialValue: text,
+      style: TextStyle(color: MyConst.primary),
       decoration: InputDecoration(
           hintText: '请输入书名或作者',
           contentPadding:
@@ -182,7 +184,7 @@ class _SearchPageState extends State<SearchPage> {
           return MyInk(
             child: Container(
               padding: EdgeInsets.only(top: gap, left: gap, right: gap),
-              decoration: BoxDecoration(color: Colors.white),
+              // decoration: BoxDecoration(color: Colors.white),
               child: row,
             ),
             onTap: () {
@@ -227,8 +229,7 @@ class _SearchPageState extends State<SearchPage> {
               item.desc,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: MyConst.mediumTextColor, fontSize: Adapt.px(24)),
+              style: TextStyle(fontSize: Adapt.px(24)),
             )
           ],
         )),

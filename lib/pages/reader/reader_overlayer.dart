@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_novel/common/adapt.dart';
-import 'package:flutter_novel/common/const.dart';
+// import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/models/article.dart';
 import 'package:flutter_novel/pages/reader/reader_utils.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +28,8 @@ class ReaderOverlayer extends StatelessWidget {
         children: <Widget>[
           Text(article.name,
               style: TextStyle(
-                  fontSize: fontSize, color: MyConst.mediumTextColor)),
+                fontSize: fontSize,
+              )),
           Expanded(child: Container()),
           Row(
             children: <Widget>[
@@ -36,11 +37,13 @@ class ReaderOverlayer extends StatelessWidget {
               SizedBox(width: 10),
               Text(time,
                   style: TextStyle(
-                      fontSize: fontSize, color: MyConst.mediumTextColor)),
+                    fontSize: fontSize,
+                  )),
               Expanded(child: Container()),
               Text('第${page + 1}页/共${article.pageCount}页',
                   style: TextStyle(
-                      fontSize: fontSize, color: MyConst.mediumTextColor)),
+                    fontSize: fontSize,
+                  )),
             ],
           ),
         ],

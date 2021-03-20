@@ -10,6 +10,9 @@ import 'package:flutter_novel/pages/reader/reader_config.dart';
 // import 'package:flutter_novel/pages/reader/reader_utils.dart';
 import 'package:wakelock/wakelock.dart';
 
+const black = 0xFF121212;
+const white = 0xFFCCCCCC;
+
 class ReaderMenu extends StatefulWidget {
   final List<Article> chapters;
   final int articleIndex;
@@ -46,6 +49,7 @@ class _ReaderMenuState extends State<ReaderMenu>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   Animation<double> animation;
+  bool isDark = false;
 
   double progressValue;
   bool isTipVisible = false;
@@ -55,7 +59,9 @@ class _ReaderMenuState extends State<ReaderMenu>
     0xFFe3c394,
     0xFFd9caac,
     0xFFE3EDCD,
-    0xFF121212,
+    black,
+    0xFF333333,
+    0xFF666666,
     0xFFe8e0c2,
     0xFFCCE8CF,
     0xFFbeb1c2,
@@ -68,7 +74,7 @@ class _ReaderMenuState extends State<ReaderMenu>
     0xFF333333,
     0xFF666666,
     0xFF999999,
-    0xFFCCCCCC,
+    white,
     0xFFFFFFFF,
     0xDDffffff,
     0x99ffffff,
@@ -253,6 +259,10 @@ class _ReaderMenuState extends State<ReaderMenu>
     );
   }
 
+  bool isDarkMode(BuildContext context) {
+    return Theme.of(context).colorScheme.brightness == Brightness.dark;
+  }
+
   buildBottomView() {
     return Positioned(
       bottom: -(Adapt.paddingBottom() + 110) * (1 - animation.value),
@@ -262,6 +272,37 @@ class _ReaderMenuState extends State<ReaderMenu>
           ? buildSetting()
           : Column(
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 8, bottom: 8),
+                      child: MyInk(
+                        child: CircleAvatar(
+                          child: Icon(isDark
+                              ? Icons.lightbulb
+                              : Icons.nightlight_round),
+                          backgroundColor: isDark ? Colors.black : Colors.white,
+                        ),
+                        onTap: () {
+                          bool _isDark = false;
+                          if (ReaderConfig.bgColor == black) {
+                            ReaderConfig.changeBgColor(bgColors[0]);
+                            ReaderConfig.changeColor(colors[0]);
+                          } else {
+                            ReaderConfig.changeBgColor(black);
+                            ReaderConfig.changeColor(white);
+                            _isDark = true;
+                          }
+                          setState(() {
+                            isDark = _isDark;
+                          });
+                          widget.refreshUI();
+                        },
+                      ),
+                    )
+                  ],
+                ),
                 buildProgressTipView(),
                 Container(
                   decoration: BoxDecoration(

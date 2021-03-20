@@ -57,6 +57,7 @@ class NovelProvider {
     await open();
     List<Map> maps = await db.query(
       _tableName,
+      orderBy: 'updateTime',
     );
     return maps.map((v) => Novel.fromJson(v)).toList();
   }

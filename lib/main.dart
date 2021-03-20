@@ -57,11 +57,10 @@ class _MyAppState extends State<MyApp> {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
       ),
+      builder: BotToastInit(),
     );
 
     // return app;
-    return BotToastInit(
-      child: app,
-    );
+    return app;
   }
 }
