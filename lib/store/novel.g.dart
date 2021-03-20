@@ -6,34 +6,32 @@ part of 'novel.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$NovelStore on _NovelStore, Store {
   final _$listAtom = Atom(name: '_NovelStore.list');
 
   @override
   List<Novel> get list {
-    _$listAtom.context.enforceReadPolicy(_$listAtom);
-    _$listAtom.reportObserved();
+    _$listAtom.reportRead();
     return super.list;
   }
 
   @override
   set list(List<Novel> value) {
-    _$listAtom.context.conditionallyRunInAction(() {
+    _$listAtom.reportWrite(value, super.list, () {
       super.list = value;
-      _$listAtom.reportChanged();
-    }, _$listAtom, name: '${_$listAtom.name}_set');
+    });
   }
 
-  final _$getShelfAsyncAction = AsyncAction('getShelf');
+  final _$getShelfAsyncAction = AsyncAction('_NovelStore.getShelf');
 
   @override
   Future getShelf([bool needUpdate = false]) {
     return _$getShelfAsyncAction.run(() => super.getShelf(needUpdate));
   }
 
-  final _$deleteAsyncAction = AsyncAction('delete');
+  final _$deleteAsyncAction = AsyncAction('_NovelStore.delete');
 
   @override
   Future delete(String id, int idx) {
@@ -44,7 +42,8 @@ mixin _$NovelStore on _NovelStore, Store {
 
   @override
   dynamic destory() {
-    final _$actionInfo = _$_NovelStoreActionController.startAction();
+    final _$actionInfo =
+        _$_NovelStoreActionController.startAction(name: '_NovelStore.destory');
     try {
       return super.destory();
     } finally {
@@ -54,7 +53,8 @@ mixin _$NovelStore on _NovelStore, Store {
 
   @override
   String toString() {
-    final string = 'list: ${list.toString()}';
-    return '{$string}';
+    return '''
+list: ${list}
+    ''';
   }
 }

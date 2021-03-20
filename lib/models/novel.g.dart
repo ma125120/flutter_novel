@@ -17,6 +17,7 @@ Novel _$NovelFromJson(Map<String, dynamic> json) {
     ..lastChapterId = json['LastChapterId'] as String
     ..lastChapter = json['LastChapter'] as String
     ..cName = json['CName'] as String
+    ..lastReadTime = json['lastReadTime'] as int
     ..updateTime = json['UpdateTime'] as String
     ..isExist = json['isExist'] as int
     ..storeLastChapterId = json['storeLastChapterId'] as String
@@ -34,6 +35,7 @@ Map<String, dynamic> _$NovelToJson(Novel instance) => <String, dynamic>{
       'LastChapterId': instance.lastChapterId,
       'LastChapter': instance.lastChapter,
       'CName': instance.cName,
+      'lastReadTime': instance.lastReadTime,
       'UpdateTime': instance.updateTime,
       'isExist': instance.isExist,
       'storeLastChapterId': instance.storeLastChapterId,

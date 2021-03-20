@@ -24,7 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   webview_flutter: ^0.3.19+8
-  json_annotation: ^3.0.0
+  json_annotation: ^4.0.0
   fluro: 2.0.3
   dio: ^3.0.9
   cached_network_image: ^2.0.0
@@ -33,7 +33,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   mobx: ^1.0.0
   flutter_mobx: ^1.0.0
-  dio_http_cache: ^0.2.6
+  dio_cache_interceptor: ^1.0.0
   sqflite: ^1.2.2
   device_info: ^0.4.2+2
   battery: ^1.0.0
@@ -42,7 +42,7 @@ dependencies:
   wakelock: ^0.1.4+1
 
 dev_dependencies:
-  built_value: ^6.0.0
+  built_value: ^7.0.3
   build_runner: ^1.8.0
   mobx_codegen: ^1.0.0
   flutter_test:

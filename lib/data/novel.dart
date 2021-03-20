@@ -11,8 +11,13 @@ class NovelProvider {
   Database db;
 
   Future open() async {
-    db = await openDatabase(MyConst.dbPath, version: 1,
-        onCreate: (Database db, int version) async {
+    db = await openDatabase(MyConst.dbPath, version: 3,
+        onUpgrade: (Database db, int oldVersion, int newVersion) async {
+      print('更新');
+      await db.execute('''
+          ALTER TABLE $_tableName ADD 'lastReadTime' INTEGER NOT NULL DEFAULT 0
+        ''');
+    }, onCreate: (Database db, int version) async {
       await db.execute('''
           create table $_tableName ( 
             Id text primary key, 
@@ -37,11 +42,13 @@ class NovelProvider {
   Future<Novel> insert(Novel novel) async {
     await open();
     novel.isExist = 1;
+    novel.lastReadTime = DateTime.now().millisecondsSinceEpoch;
     await db.insert(_tableName, novel.toJson());
     return novel;
   }
 
   Future<Novel> update(Novel novel) async {
+    novel.lastReadTime = DateTime.now().millisecondsSinceEpoch;
     await open();
     try {
       await db.update(_tableName, novel.toJson(),
@@ -57,8 +64,9 @@ class NovelProvider {
     await open();
     List<Map> maps = await db.query(
       _tableName,
-      orderBy: 'updateTime',
+      orderBy: 'lastReadTime DESC',
     );
+
     return maps.map((v) => Novel.fromJson(v)).toList();
   }
 

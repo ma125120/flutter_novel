@@ -11,6 +11,7 @@ import 'package:flutter_novel/common/const.dart';
 import 'package:flutter_novel/components/article/img.dart';
 import 'package:flutter_novel/components/article/index.dart';
 import 'package:flutter_novel/components/index.dart';
+import 'package:flutter_novel/data/novel.dart';
 // import 'package:flutter_novel/data/novel.dart';
 import 'package:flutter_novel/models/novel.dart';
 import 'package:flutter_novel/router/index.dart';
@@ -98,8 +99,14 @@ class _BookShelfPageState extends State<BookShelfPage>
         double gap = MyConst.gap;
 
         return MyInk(
-          onTap: () {
-            Navigator.of(context).pushNamed(Routes.reader, arguments: item);
+          onTap: () async {
+            novelProvider.update(item);
+            await Navigator.of(context)
+                .pushNamed(Routes.reader, arguments: item);
+
+            if (mounted) {
+              fetchData();
+            }
           },
           onLongPress: () {
             showCupertinoDialog(

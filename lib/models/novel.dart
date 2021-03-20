@@ -30,6 +30,8 @@ class Novel {
 
   @JsonKey()
   int isExist = 0;
+  // 上次阅读的时间
+  int lastReadTime = 0;
 
   // 上次存储的最后一章
   String storeLastChapterId;

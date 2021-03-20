@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_novel/components/loading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_novel/config/index.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 
 typedef RequestCallBack = void Function(Map data);
 
@@ -13,8 +13,22 @@ class HttpRequest {
   static Dio dio = new Dio();
 
   static _addCache() {
-    dio.interceptors
-        .add(DioCacheManager(CacheConfig(baseUrl: baseUrl)).interceptor);
+    // Global options
+    final options = CacheOptions(
+      store: DbCacheStore(), // Required.
+      policy: CachePolicy
+          .requestFirst, // Default. Requests first and caches response.
+      hitCacheOnErrorExcept: [
+        401,
+        403
+      ], // Optional. Returns a cached response on error if available but for statuses 401 & 403.
+      priority: CachePriority
+          .normal, // Optional. Default. Allows 3 cache levels and ease cleanup.
+      maxStale: const Duration(
+          days:
+              7), // Very optional. Overrides any HTTP directive to delete entry past this duration.
+    );
+    dio.interceptors.add(DioCacheInterceptor(options: options));
   }
 
   static init() {
@@ -60,31 +74,38 @@ class HttpRequest {
       if (needLoading) {
         MyLoading.show(url);
       }
-      Response<T> res = await dio.request(
-        url,
-        queryParameters: params,
-        data: data,
-        // options: Options(
-        //   headers: headers,
-        //   method: method,
-        //   extra: {
-        //     'needLoading': needLoading ?? true,
-        //     ...(extra ?? {}),
-        //   },
-        // ),
-        options: buildCacheOptions(
-          Duration(days: 7),
-          forceRefresh: true,
+      Response<T> res = await dio.request(url,
+          queryParameters: params,
+          data: data,
+          // options: Options(
+          //   headers: headers,
+          //   method: method,
+          //   extra: {
+          //     'needLoading': needLoading ?? true,
+          //     ...(extra ?? {}),
+          //   },
+          // ),
           options: Options(
             headers: headers,
             method: method,
             extra: {
               'needLoading': needLoading ?? true,
-              ...(extra ?? {}),
+              ...(CacheOptions(policy: CachePolicy.refresh).toExtra())
             },
-          ),
-        ),
-      );
+          )
+          //  buildCacheOptions(
+          //   Duration(days: 7),
+          //   forceRefresh: true,
+          //   options: Options(
+          //     headers: headers,
+          //     method: method,
+          //     extra: {
+          //       'needLoading': needLoading ?? true,
+          //       ...(extra ?? {}),
+          //     },
+          //   ),
+          // ),
+          );
 
       if (needLoading) {
         MyLoading.complete(url);

@@ -6,78 +6,71 @@ part of 'article.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ArticleStore on _ArticleStore, Store {
   final _$listAtom = Atom(name: '_ArticleStore.list');
 
   @override
   List<Article> get list {
-    _$listAtom.context.enforceReadPolicy(_$listAtom);
-    _$listAtom.reportObserved();
+    _$listAtom.reportRead();
     return super.list;
   }
 
   @override
   set list(List<Article> value) {
-    _$listAtom.context.conditionallyRunInAction(() {
+    _$listAtom.reportWrite(value, super.list, () {
       super.list = value;
-      _$listAtom.reportChanged();
-    }, _$listAtom, name: '${_$listAtom.name}_set');
+    });
   }
 
   final _$currentArticleAtom = Atom(name: '_ArticleStore.currentArticle');
 
   @override
   Article get currentArticle {
-    _$currentArticleAtom.context.enforceReadPolicy(_$currentArticleAtom);
-    _$currentArticleAtom.reportObserved();
+    _$currentArticleAtom.reportRead();
     return super.currentArticle;
   }
 
   @override
   set currentArticle(Article value) {
-    _$currentArticleAtom.context.conditionallyRunInAction(() {
+    _$currentArticleAtom.reportWrite(value, super.currentArticle, () {
       super.currentArticle = value;
-      _$currentArticleAtom.reportChanged();
-    }, _$currentArticleAtom, name: '${_$currentArticleAtom.name}_set');
+    });
   }
 
   final _$prevArticleAtom = Atom(name: '_ArticleStore.prevArticle');
 
   @override
   Article get prevArticle {
-    _$prevArticleAtom.context.enforceReadPolicy(_$prevArticleAtom);
-    _$prevArticleAtom.reportObserved();
+    _$prevArticleAtom.reportRead();
     return super.prevArticle;
   }
 
   @override
   set prevArticle(Article value) {
-    _$prevArticleAtom.context.conditionallyRunInAction(() {
+    _$prevArticleAtom.reportWrite(value, super.prevArticle, () {
       super.prevArticle = value;
-      _$prevArticleAtom.reportChanged();
-    }, _$prevArticleAtom, name: '${_$prevArticleAtom.name}_set');
+    });
   }
 
   final _$nextArticleAtom = Atom(name: '_ArticleStore.nextArticle');
 
   @override
   Article get nextArticle {
-    _$nextArticleAtom.context.enforceReadPolicy(_$nextArticleAtom);
-    _$nextArticleAtom.reportObserved();
+    _$nextArticleAtom.reportRead();
     return super.nextArticle;
   }
 
   @override
   set nextArticle(Article value) {
-    _$nextArticleAtom.context.conditionallyRunInAction(() {
+    _$nextArticleAtom.reportWrite(value, super.nextArticle, () {
       super.nextArticle = value;
-      _$nextArticleAtom.reportChanged();
-    }, _$nextArticleAtom, name: '${_$nextArticleAtom.name}_set');
+    });
   }
 
-  final _$getArticleAllInfoAsyncAction = AsyncAction('getArticleAllInfo');
+  final _$getArticleAllInfoAsyncAction =
+      AsyncAction('_ArticleStore.getArticleAllInfo');
 
   @override
   Future getArticleAllInfo(Novel novel) {
@@ -87,8 +80,11 @@ mixin _$ArticleStore on _ArticleStore, Store {
 
   @override
   String toString() {
-    final string =
-        'list: ${list.toString()},currentArticle: ${currentArticle.toString()},prevArticle: ${prevArticle.toString()},nextArticle: ${nextArticle.toString()}';
-    return '{$string}';
+    return '''
+list: ${list},
+currentArticle: ${currentArticle},
+prevArticle: ${prevArticle},
+nextArticle: ${nextArticle}
+    ''';
   }
 }

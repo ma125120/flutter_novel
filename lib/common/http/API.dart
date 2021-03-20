@@ -96,9 +96,12 @@ class API {
     res['nextId'] = res['nid'] == -1 ? null : res['nid'].toString();
     String content = res['content'] ?? '';
     content = content
-        .replaceAll(new RegExp(r'\<br\s*\/\>'), '')
-        .replaceAll(new RegExp(r'\s{4,}'), '\n        ');
-    // .replaceAll('\r\n　　\r\n', '\r\n').replaceAll('        ', '    ');
+        .replaceAll(
+            new RegExp(
+              r'\<br\s*\/\>',
+            ),
+            '')
+        .replaceAll(new RegExp(r'\s{2,}'), '\n        ');
     res['content'] = content;
 
     return Article.fromJson(res);
