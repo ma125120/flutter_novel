@@ -146,6 +146,7 @@ class _ReaderPageState extends State<ReaderPage> {
   @override
   Widget build(BuildContext context) {
     if (currentArticle == null || list == null) {
+      Color color = Color(ReaderConfig.color);
       return Scaffold(
         body: Container(
           child: Center(
@@ -158,7 +159,7 @@ class _ReaderPageState extends State<ReaderPage> {
                 ),
                 Text(
                   '加载中...',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: color),
                 ),
               ],
             ),

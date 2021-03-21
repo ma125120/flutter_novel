@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_novel/common/theme.dart';
 import 'package:flutter_novel/data/novel.dart';
+import 'package:flutter_novel/pages/reader/reader_config.dart';
 import 'dart:io';
 import 'router/index.dart';
 import 'router/watch.dart';
@@ -28,8 +29,6 @@ class MyApp extends StatefulWidget {
 
     App.router = router;
     // App.
-
-    API.init();
   }
 
   @override
@@ -40,7 +39,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    API.init();
     novelProvider.getShelf();
+    ReaderConfig.init();
   }
 
   @override

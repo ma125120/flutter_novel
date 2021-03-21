@@ -13,7 +13,6 @@ class NovelProvider {
   Future open() async {
     db = await openDatabase(MyConst.dbPath, version: 3,
         onUpgrade: (Database db, int oldVersion, int newVersion) async {
-      print('更新');
       await db.execute('''
           ALTER TABLE $_tableName ADD 'lastReadTime' INTEGER NOT NULL DEFAULT 0
         ''');
@@ -33,7 +32,8 @@ class NovelProvider {
             isExist INTEGER DEFAULT 0,
             storeLastChapterId text ,
             currentChapterId text,
-            currentPageIndex INTEGER DEFAULT 0
+            currentPageIndex INTEGER DEFAULT 0,
+            lastReadTime INTEGER NOT NULL DEFAULT 0
             )
         ''');
     });
